@@ -1,0 +1,6 @@
+user_created: Benutzer {username} erfolgreich erstellt.
+login_success: Erfolgreich als {username} angemeldet.
+session_refreshed: Sitzung erfolgreich erneuert.
+logout_success: Erfolgreich abgemeldet.
+update_successfull: Daten erfolgreich aktualisiert. Bitte erneut einloggen.
+image_uploaded: Bild erfolgreich hochgeladen.
