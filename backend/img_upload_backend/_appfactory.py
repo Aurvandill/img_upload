@@ -4,7 +4,7 @@ from sanic_ext import Extend
 from tortoise.log import logger
 from sanic.response import json
 from jwt import InvalidTokenError
-from sanic import Sanic, text, Request
+from sanic import Sanic, Request
 from tortoise import Tortoise, connections
 
 from img_upload_backend.Routes import generic_bp
@@ -27,17 +27,17 @@ i18n.set("use_locale_dirs", True)
 i18n.load_everything()
 
 
-def attach_tortoise(app: Sanic):
+def attach_tortoise(app: Sanic, db_url: str = "sqlite://:memory:"):
 
     async def tortoise_init() -> None:
         await Tortoise.init(
-            db_url="sqlite://:memory:",
+            db_url=db_url,
             modules={"data_models": ["img_upload_backend.data_models"]},
         )
         logger.info(
             "Tortoise-ORM started, %s, %s", connections._get_storage(), Tortoise.apps
         )  # pylint: disable=W0212
-        await Tortoise.generate_schemas()
+        await Tortoise.generate_schemas(safe=True)
 
     @app.listener("after_server_stop")
     async def close_orm(app, loop):  # pylint: disable=W0612
@@ -94,8 +94,9 @@ def attach_error_handlers(app: Sanic):
 
 def create_app(config: dict) -> Sanic:
     app_name = config.get("app_name", "ImageUploadBackend")
+    db_url= config.get("db_url","sqlite://:memory:")
     app = Sanic(app_name)
-    attach_tortoise(app)
+    attach_tortoise(app, db_url)
     attach_endpoints(app)
     attach_signal_handlers(app)
     attach_error_handlers(app)

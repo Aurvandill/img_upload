@@ -18,7 +18,7 @@ async def login(request: Request):
     request_data = request.json
     username = request_data.get("username", None)
     password = request_data.get("password", None)
-    if username is None:
+    if username is None or username == "":
         raise LoginError(
             {
                 "msg": i18n.t("errors.login_not_provided"),
@@ -35,10 +35,7 @@ async def login(request: Request):
             status_code=400,
         )
 
-    if "@" in username:
-        login_data = {"email": username}
-    else:
-        login_data = {"username": username}
+    login_data = {"username": username}
 
     user = None
     try:
@@ -47,8 +44,8 @@ async def login(request: Request):
         # this will get thrown if the username is to short
         raise LoginError(
             {
-                "msg": i18n.t("errors.email_invalid"),
-                "msg_key": "errors.email_invalid",
+                "msg": i18n.t("errors.login_no_user"),
+                "msg_key": "errors.login_no_user",
             },
             status_code=400,
         )

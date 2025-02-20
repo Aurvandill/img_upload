@@ -1,6 +1,7 @@
 /backend/images
 /backend/config.toml
 /backend/Pipfile.lock
+/backend/test.db*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
