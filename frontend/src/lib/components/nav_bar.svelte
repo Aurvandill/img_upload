@@ -7,11 +7,18 @@
 	let username = writable('EXAMPLE_USER');
 	let pw = $state('');
 
-	$effect(async () => {
-		if ($authenticated == false){
+	$effect(check_session);
+
+	async function logout() {
+		$authenticated = false;
+	}
+
+	async function check_session() {
+		if ($authenticated == false) {
 			//$username = "unauthorized";
-			return
+			return;
 		}
+		setTimeout(check_session, 60000);
 		const endpoint = `${API_URL}/Session`;
 		try {
 			const response = await fetch(endpoint, {
@@ -38,38 +45,6 @@
 			$username = 'unbekannt';
 			$authenticated = false;
 		}
-	});
-
-	async function logout() {
-		$authenticated = false;
-	}
-
-	async function check_session() {
-		const endpoint = `${API_URL}/Session`;
-		try {
-			const response = await fetch(endpoint, {
-				method: 'GET',
-				//credentials: 'same-origin',
-				credentials: 'include'
-			});
-			if (!response.ok) {
-				let json = { msg: 'unbekannter Fehler' };
-				try {
-					json = await response.json();
-				} catch (error) {
-					json = { msg: 'unbekannter Fehler' };
-				}
-
-				addToast({ message: json.msg, type: 'danger', heading: 'Fehler!' });
-				throw new Error(`Response status: ${response.status}`);
-			}
-
-			const json = await response.json();
-			console.log(json);
-			return json.user.username;
-		} catch (error) {
-			console.error(error.message);
-		}
 	}
 </script>
 
@@ -88,14 +63,23 @@
 			</li>
 		{:else}
 			<li class="nav-item me-1">
-				<button class="btn btn-outline-primary" aria-current="page" onclick={check_session}
-					>check_session</button
-				>
+				<a href="/users" class="nav-link" aria-current="page">Nutzer</a>
 			</li>
 			<li class="nav-item me-1">
+				<a href="/images/upload" class="nav-link" aria-current="page">Bilder</a>
+			</li>
+			<li class="nav-item me-3 btn btn-outline-primary">
+				<div class="d-flex justify-content-center align-items-center">
+					<i class="bi bi-person-circle me-2"></i>
+					<p class="mb-0">{$username}</p>
+				</div>
+			</li>
+			<li class="nav-item">
 				<button class="btn btn-danger" aria-current="page" onclick={logout}>Logout</button>
 			</li>
-			<li class="nav-item"><p>{$username}</p></li>
 		{/if}
 	</ul>
 </header>
+
+<style>
+</style>
