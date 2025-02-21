@@ -1,0 +1,25 @@
+cors_origin = "https://localhost:5173"
+app_name = "img_upload_backend"
+debug = true
+port = 9999
+listening_ip = "127.0.0.1"
+db_url = "sqlite://test.db"
+
+[Files]
+image_path = "./images"
+supported_image_types = ["jpeg", "png", "gif", "webp"]
+
+[JWT]
+issuer = "img_upload_backend"
+algorithm = "HS256"
+secret = "supersecretjwtcode"
+
+# soem default users for testing purposes
+[[users]]
+username="admin"
+password="admin"
+admin=true
+
+[[users]]
+username="test123"
+password="test123"
