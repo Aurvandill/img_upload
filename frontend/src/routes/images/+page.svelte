@@ -4,12 +4,12 @@
     import { addToast } from "$lib/stores";
     import { API_URL } from "$lib/defines";
 
-    let images = writable([]);
+    let images = writable({image_couunt:0, images:{}});
     $effect(get_images);
 	async function get_images() {
 
         if ($authenticated == false) {
-			addToast({ message: "Du Bist nicht angemeldet", type: 'danger', heading: 'Fehler!' });
+			console.log("we are not authenticated?")
 			return;
 		}
 		const endpoint = `${API_URL}/Image`;
@@ -26,7 +26,7 @@
 				} catch (error) {
 					json = { msg: 'unbekannter Fehler' };
 				}
-
+				console.log(json)
 				addToast({ message: json.msg, type: 'danger', heading: 'Fehler!' });
 				throw new Error(`Response status: ${response.status}`);
 			}
@@ -42,4 +42,7 @@
 
 <div class="ms-3 me-3" style="background-color:aqua">
 	<h1>Bilder</h1>
+	{#each $images.images as image}
+		<p>{image.filename}</p>
+	{/each}
 </div>
