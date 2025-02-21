@@ -59,11 +59,12 @@ def attach_signal_handlers(app: Sanic):
     app.add_signal(create_thumbnail, "user.image.uploaded")
 
 
-def attach_endpoints(app: Sanic):
+def attach_endpoints(app: Sanic, cors_origin:str):
 
     app.blueprint(generic_bp)
 
-    app.config.CORS_ORIGINS = "*"
+    app.config.CORS_ORIGINS = cors_origin
+    app.config.CORS_SUPPORTS_CREDENTIALS = True
 
 
 def attach_error_handlers(app: Sanic):
@@ -97,7 +98,7 @@ def create_app(config: dict) -> Sanic:
     db_url= config.get("db_url","sqlite://:memory:")
     app = Sanic(app_name)
     attach_tortoise(app, db_url)
-    attach_endpoints(app)
+    attach_endpoints(app, config.get("cors_origin", "https://localhost:5173"))
     attach_signal_handlers(app)
     attach_error_handlers(app)
     app.ctx.CFG = config
