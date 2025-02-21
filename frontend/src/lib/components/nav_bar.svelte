@@ -51,12 +51,12 @@
 <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
 	<a
 		href="/"
-		class="d-flex align-items-center ms-5 me-md-auto link-body-emphasis text-decoration-none"
+		class="d-flex align-items-center ms-3 me-md-auto link-body-emphasis text-decoration-none"
 	>
 		<i class="bi bi-envelope"></i>
 		<span class="fs-4 ms-2">Nellys und Erics Hochzeit</span>
 	</a>
-	<ul class="nav nav-pills me-5">
+	<ul class="nav nav-pills me-3">
 		{#if !$authenticated}
 			<li class="nav-item">
 				<a href="/login" class="nav-link active" aria-current="page">Login</a>
@@ -66,9 +66,14 @@
 				<a href="/users" class="nav-link" aria-current="page">Nutzer</a>
 			</li>
 			<li class="nav-item me-1">
-				<a href="/images/upload" class="nav-link" aria-current="page">Bilder</a>
+				<a href="/images" class="nav-link" aria-current="page">Bilder</a>
 			</li>
-			<li class="nav-item me-3 btn btn-outline-primary">
+			<li class="nav-item me-1">
+				<a href="/images/upload">
+					<button class="btn bi-cloud-arrow-up btn-primary"></button>
+				</a>
+			</li>
+			<li class="nav-item me-1 btn btn-outline-primary">
 				<div class="d-flex justify-content-center align-items-center">
 					<i class="bi bi-person-circle me-2"></i>
 					<p class="mb-0">{$username}</p>
