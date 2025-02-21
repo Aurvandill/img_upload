@@ -3,12 +3,15 @@
 	import { addToast, authenticated } from '$lib/stores';
 	import { goto } from '$app/navigation';
 
+	
+
 	async function login() {
 		const url = `${API_URL}/Session/login`;
 		try {
 			const response = await fetch(url, {
 				method: 'POST',
-				body: JSON.stringify({ username: username, password: pw })
+				body: JSON.stringify({ username: username, password: pw }),
+				credentials: 'include'
 			});
 			if (!response.ok) {
 				let json = { msg: 'unbekannter Fehler' };
@@ -20,6 +23,7 @@
 
 				addToast({ message: json.msg, type: 'danger', heading: 'Fehler!' });
 				throw new Error(`Response status: ${response.status}`);
+				$authenticated = false;
 			}
 
 			const json = await response.json();
