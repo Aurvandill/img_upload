@@ -11,6 +11,9 @@
 			headers: {
 				'Cache-Control': '',
 				'X-Requested-With': ''
+			},
+			renameFilename: function (file) {
+				return new Date().toISOString() + '_' + file;
 			}
 		});
 	});
@@ -26,8 +29,8 @@
 ></form>
 
 <style>
-    .dropzone{
-        max-height: 60vh;
-        height: 60vh;
-    }
+	.dropzone {
+		max-height: 60vh;
+		height: 60vh;
+	}
 </style>
