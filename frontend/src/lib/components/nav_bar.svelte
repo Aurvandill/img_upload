@@ -2,7 +2,7 @@
 	import { authenticated, addToast } from '$lib/stores';
 	import { API_URL } from '$lib/defines';
 	import { writable } from 'svelte/store';
-	authenticated;
+	import { onMount } from 'svelte';
 
 	let username = writable('EXAMPLE_USER');
 	let pw = $state('');
@@ -12,6 +12,22 @@
 	async function logout() {
 		$authenticated = false;
 	}
+
+	onMount(() => {
+		let endpoint = `${API_URL}/Session`;
+		fetch(endpoint, {
+			method: 'GET',
+			//credentials: 'same-origin',
+			credentials: 'include'
+		}).then((response) => {
+			console.log(response);
+			response.json().then((resp_data) => {
+				console.log(resp_data);
+				$username = resp_data.user.username;
+				$authenticated = true;
+			});
+		});
+	});
 
 	async function check_session() {
 		if ($authenticated == false) {
@@ -62,15 +78,15 @@
 				<a href="/login" class="nav-link active" aria-current="page">Login</a>
 			</li>
 		{:else}
-			<li class="nav-item me-1">
+			<li class="nav-item">
 				<a href="/users" class="nav-link" aria-current="page">Nutzer</a>
 			</li>
 			<li class="nav-item me-1">
 				<a href="/images" class="nav-link" aria-current="page">Bilder</a>
 			</li>
-			<li class="nav-item me-1">
-				<a href="/images/upload">
-					<button class="btn bi-cloud-arrow-up btn-primary"></button>
+			<li class="nav-item me-3">
+				<a href="/images/upload" aria-label="Upload image link">
+					<button class="btn bi-cloud-arrow-up btn-primary" aria-label="Upload Image Button"></button>
 				</a>
 			</li>
 			<li class="nav-item me-1 btn btn-outline-primary">
