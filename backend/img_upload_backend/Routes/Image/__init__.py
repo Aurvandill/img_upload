@@ -96,8 +96,14 @@ async def upload_image(request: Request):
             {"msg": i18n.t("errors.to_many_files"), "msg_key": "errors.to_many_files"}
         )
     image_handler: ImageHandler = request.app.ctx.image_handler
-    filename, file = list(request.files.items())[0]
-    file = file[0].body
+
+    filename, raw_file = list(request.files.items())[0]
+    file = raw_file[0].body
+    try:
+        filename = raw_file[0].name
+    except Exception as exc:
+        pass
+
 
     img_uuid = uuid4()
     await image_handler.create_file(file, str(img_uuid))
