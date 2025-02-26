@@ -1,6 +1,7 @@
 import i18n
 
 from sanic import Request
+from sanic.response import json as json_resp
 from uuid import UUID
 from typing import Optional
 
@@ -62,6 +63,13 @@ async def del_image(request: Request, image_id: UUID):
     
     await image_handler.remove_file(str(image_id))
     await image.delete()
+
+    return json_resp(
+        {
+            "msg": i18n.t("messages.image_uploaded"),
+            "msg_key": "messages.image_uploaded",
+        }
+    )
 
 
 from . import image_bp

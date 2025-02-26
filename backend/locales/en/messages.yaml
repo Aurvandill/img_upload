@@ -4,3 +4,4 @@ session_refreshed: Session successfully refreshed.
 logout_success: Successfully logged out.
 update_successfull: Update successfull. Please log in again.
 image_uploaded: Image upload successfull.
+image_deleted: Image deletion successfull.
