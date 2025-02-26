@@ -1,18 +1,27 @@
 <script>
-    import { authenticated } from "$lib/stores";
-    import { writable } from "svelte/store";
-    import { addToast } from "$lib/stores";
-    import { API_URL } from "$lib/defines";
+	import { authenticated } from '$lib/stores';
+	import { writable } from 'svelte/store';
+	import { addToast } from '$lib/stores';
+	import { API_URL, PAGESIZE } from '$lib/defines';
+	import ImgContainer from '$lib/components/img_container.svelte';
+	import Pagination from '$lib/components/pagination.svelte';
 
-    let images = writable({image_couunt:0, images:{}});
-    $effect(get_images);
+	let images = writable({ image_count: 0, images: {} });
+	let currentpage = writable(1);
+	let pages = writable(3);
+
+	function blub(e) {
+		$currentpage = e.detail;
+		get_images();
+	}
+
+	$effect(get_images);
 	async function get_images() {
-
-        if ($authenticated == false) {
-			console.log("we are not authenticated?")
+		if ($authenticated == false) {
+			console.log('we are not authenticated?');
 			return;
 		}
-		const endpoint = `${API_URL}/Image`;
+		const endpoint = `${API_URL}/Image?pagesize=${PAGESIZE}&page=${$currentpage}`;
 		try {
 			const response = await fetch(endpoint, {
 				method: 'GET',
@@ -26,23 +35,31 @@
 				} catch (error) {
 					json = { msg: 'unbekannter Fehler' };
 				}
-				console.log(json)
+				console.log(json);
 				addToast({ message: json.msg, type: 'danger', heading: 'Fehler!' });
 				throw new Error(`Response status: ${response.status}`);
 			}
 
 			const json = await response.json();
 			console.log(json);
-            $images = json
+			$pages = Math.floor(json.image_count / PAGESIZE) + 1;
+			console.log($pages);
+			$images = json;
 		} catch (error) {
-            console.log(error)
+			console.log(error);
 		}
-    }
+	}
 </script>
 
-<div class="ms-3 me-3" style="background-color:aqua">
-	<h1>Bilder</h1>
+<h1>Bilder ({$images.image_count})</h1>
+<div class="d-flex justify-content-center">
+	<Pagination on:change={blub} pages={$pages} currentpage={$currentpage}></Pagination>
+</div>
+<div class="ms-3 me-3 d-flex flex-row flex-wrap align-content-start align-items-start">
 	{#each $images.images as image}
-		<p>{image.filename}</p>
+		<ImgContainer {image} />
 	{/each}
+</div>
+<div class="d-flex justify-content-center">
+	<Pagination on:change={blub} pages={$pages} currentpage={$currentpage}></Pagination>
 </div>
