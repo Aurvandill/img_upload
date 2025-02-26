@@ -1,38 +1,25 @@
-# sv
+# IMG Upload Frontend
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Das ist das Frontend für das Image Upload backend.
 
-## Creating a project
+## Installation
 
-If you're seeing this, you've probably already done this step. Congrats!
+Folgende Befehle führt man aus um das Frontend zu installieren
 
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
+``` bash
+git clone https://github.com/Aurvandill/img_upload.git
+cd img_upload/frontend
+npm install
 ```
 
-## Developing
+Danach editiert man die Datei `img_upload/frontend/src/lib/defines` und aktualisiert den Parameter `API_URL` je nachdem wo die API gehostet ist. (Die API braucht SSL!)
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Danach kann man die API im Debug Modus starten mit den Befehl
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+``` bash
+npm run dev -- --host
 ```
 
 ## Building
 
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+To be written

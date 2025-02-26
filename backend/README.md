@@ -20,13 +20,16 @@ alias pipenv="python3 -m pipenv"
 For the next step we want to clone the repository and change into it's directory
 
 ``` bash
-git clone tbd
+git clone https://github.com/Aurvandill/img_upload.git
 cd img_upload/backend
 # if you have python 3.13
 pipenv install
 # or if you don't have python 3.13 installed use the following command to use your currently installed python3
 pipenv install --python python3
 ```
+
+After that you can copy the `config.toml.example` as `config.toml` and modify the `cors_origin`
+
 ## Dev Stuff
 
 if you want to do the example requests via the provided python files you should also install the dev dependencies
@@ -68,11 +71,11 @@ This is the overview of the implementation of certain features
   * [x] Logout
 * [ ] Images
   * [x] upload
-  * [ ] deletion
+  * [x] deletion
   * [x] Showing
   * [ ] mass download
 * [ ] Admin
-  * [ ] Deleting other Users Images
+  * [x] Deleting other Users Images
   * [ ] create Users
 
 ## Tokens
@@ -89,7 +92,7 @@ The following json is an example of the JWT body:
   "user": {
     "uid": "6a0bbf41-c0f2-4364-b1fa-d5aedea9901c",
     "username": "test-user",
-    "groups": [],
+    "admin": false,
   }
 }
 ```
