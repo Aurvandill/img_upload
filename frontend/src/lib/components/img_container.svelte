@@ -1,8 +1,10 @@
 <script>
-	import { authenticated, user_id, admin } from '$lib/stores';
+	import { authenticated, user_id, admin, addToast } from '$lib/stores';
 	import { API_URL } from '$lib/defines';
 	let { image } = $props();
 	let show_modal = $state(false);
+	import { createEventDispatcher } from 'svelte';
+    const dispatch = createEventDispatcher();
 
 	async function get_uploader(uid) {
 		console.log(uid);
@@ -48,6 +50,7 @@
 			return 'wtf';
 		}
 	}
+
 	async function fetch_img() {
 		console.log(image);
 		if ($authenticated == false) {
@@ -68,6 +71,31 @@
 		} catch (error) {
 			alert('loading image failed');
 			return 'wtf';
+		}
+	}
+
+	async function delete_img(){
+		if ($authenticated == false) {
+			//$username = "unauthorized";
+			return;
+		}
+		const endpoint = `${API_URL}/Image/${image.uuid}`;
+		try {
+			const response = await fetch(endpoint, {
+				method: 'DELETE',
+				//credentials: 'same-origin',
+				credentials: 'include'
+			});
+			if (response.ok) {
+				const json = await response.json();
+				console.log(json)
+				addToast({ message: "Bild gelöscht", type: 'success'})
+			}
+		} catch (error) {
+			alert('deleting image failed');
+		} finally{
+			show_modal = false;
+			dispatch('del');
 		}
 	}
 </script>
@@ -109,7 +137,7 @@
 						<button
 							class="btn btn-outline-danger bi-trash3 fs-1 me-3"
 							aria-label="Close"
-							onclick={() => (show_modal = false)}
+							onclick={() => {delete_img();show_modal = false}}
 						></button>
 					{/if}
 					<button

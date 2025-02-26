@@ -42,9 +42,16 @@
 
 			const json = await response.json();
 			console.log(json);
-			$pages = Math.floor(json.image_count / PAGESIZE) + 1;
+			$pages = Math.floor(json.image_count / PAGESIZE);
+			if (Math.floor(json.image_count / PAGESIZE) != json.image_count / PAGESIZE){
+				$pages = $pages + 1
+			}
 			console.log($pages);
 			$images = json;
+			if ($images.images.length == 0 && $currentpage > 1){
+				$currentpage = $currentpage - 1
+				get_images()
+			} 
 		} catch (error) {
 			console.log(error);
 		}
@@ -57,7 +64,7 @@
 </div>
 <div class="ms-3 me-3 d-flex flex-row flex-wrap align-content-start align-items-start">
 	{#each $images.images as image}
-		<ImgContainer {image} />
+		<ImgContainer on:del={get_images} {image} />
 	{/each}
 </div>
 <div class="d-flex justify-content-center">
