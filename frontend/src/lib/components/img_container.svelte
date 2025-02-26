@@ -7,7 +7,6 @@
 	const dispatch = createEventDispatcher();
 
 	async function get_uploader(uid) {
-		console.log(uid);
 		if ($authenticated == false) {
 			//$username = "unauthorized";
 			return;
@@ -29,11 +28,6 @@
 	}
 
 	async function fetch_thumbnail() {
-		console.log(image);
-		if ($authenticated == false) {
-			//$username = "unauthorized";
-			return;
-		}
 		const endpoint = `${API_URL}/Image/${image.uuid}/thumbnail`;
 		try {
 			const response = await fetch(endpoint, {
@@ -52,11 +46,6 @@
 	}
 
 	async function fetch_img() {
-		console.log(image);
-		if ($authenticated == false) {
-			//$username = "unauthorized";
-			return;
-		}
 		const endpoint = `${API_URL}/Image/${image.uuid}`;
 		try {
 			const response = await fetch(endpoint, {

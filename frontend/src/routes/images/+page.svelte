@@ -17,10 +17,7 @@
 
 	$effect(get_images);
 	async function get_images() {
-		if ($authenticated == false) {
-			console.log('we are not authenticated?');
-			return;
-		}
+		
 		const endpoint = `${API_URL}/Image?pagesize=${PAGESIZE}&page=${$currentpage}`;
 		try {
 			const response = await fetch(endpoint, {
@@ -58,11 +55,11 @@
 	}
 </script>
 
-<h1>Bilder ({$images.image_count})</h1>
+<h1 class="ms-3">Bilder ({$images.image_count})</h1>
 <div class="d-flex justify-content-center">
 	<Pagination on:change={blub} pages={$pages} currentpage={$currentpage}></Pagination>
 </div>
-<div class="ms-3 me-3 d-flex flex-row flex-wrap align-content-start align-items-start">
+<div class="ms-3 me-3 d-flex flex-row flex-wrap align-content-start align-items-start justify-content-between">
 	{#each $images.images as image}
 		<ImgContainer on:del={get_images} {image} />
 	{/each}
