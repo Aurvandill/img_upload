@@ -4,7 +4,7 @@
 	let { image } = $props();
 	let show_modal = $state(false);
 	import { createEventDispatcher } from 'svelte';
-    const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 
 	async function get_uploader(uid) {
 		console.log(uid);
@@ -74,7 +74,7 @@
 		}
 	}
 
-	async function delete_img(){
+	async function delete_img() {
 		if ($authenticated == false) {
 			//$username = "unauthorized";
 			return;
@@ -87,13 +87,19 @@
 				credentials: 'include'
 			});
 			if (response.ok) {
-				const json = await response.json();
-				console.log(json)
-				addToast({ message: "Bild gelöscht", type: 'success'})
+				addToast({ message: 'Bild gelöscht', type: 'success' });
+			} else {
+				let json = { msg: 'unbekannter Fehler' };
+				try {
+					json = await response.json();
+				} catch (error) {
+					json = { msg: 'unbekannter Fehler' };
+				}
+				throw new Error(json.msg);
 			}
 		} catch (error) {
-			alert('deleting image failed');
-		} finally{
+			addToast({ message: error, type: 'danger', heading: 'Fehler!' });
+		} finally {
 			show_modal = false;
 			dispatch('del');
 		}
@@ -137,7 +143,7 @@
 						<button
 							class="btn btn-outline-danger bi-trash3 fs-1 me-3"
 							aria-label="Close"
-							onclick={() => {delete_img();show_modal = false}}
+							onclick={delete_img}
 						></button>
 					{/if}
 					<button
