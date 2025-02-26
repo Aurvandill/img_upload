@@ -81,6 +81,16 @@ def attach_error_handlers(app: Sanic):
             },
             status=404,
         )
+    
+    @app.exception(PermissionError)
+    async def handle_image_not_found(request: Request, exc: ImageDoesNotExist):
+        return json(
+            {
+                "msg": i18n.t("errors.permission_error"),
+                "msg_key": "errors.permission_error",
+            },
+            status=401,
+        )
 
     @app.exception(InvalidTokenError)
     async def handle_decode_error(request: Request, exc: InvalidTokenError):
