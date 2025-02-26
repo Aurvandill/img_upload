@@ -14,6 +14,7 @@ from img_upload_backend.Exceptions import (
     LoginError,
     ParameterError,
     ImageDoesNotExist,
+    SessionError
 )
 from img_upload_backend.Utility import JWTHelper, ImageHandler
 from img_upload_backend.Utility.SignalHandler import create_thumbnail
@@ -68,7 +69,7 @@ def attach_endpoints(app: Sanic, cors_origin:str):
 
 
 def attach_error_handlers(app: Sanic):
-    @app.exception(RegistrationFail, UserDoesNotExist, LoginError, ParameterError)
+    @app.exception(RegistrationFail, UserDoesNotExist, LoginError, ParameterError, SessionError)
     async def handle_registration_fail(request: Request, exc: RegistrationFail):
         return json(exc.message, status=exc.status_code)
 
@@ -81,7 +82,7 @@ def attach_error_handlers(app: Sanic):
             },
             status=404,
         )
-    
+
     @app.exception(PermissionError)
     async def handle_image_not_found(request: Request, exc: ImageDoesNotExist):
         return json(
