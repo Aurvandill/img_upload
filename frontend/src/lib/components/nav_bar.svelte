@@ -10,7 +10,20 @@
 	$effect(check_session);
 
 	async function logout() {
+		let endpoint = `${API_URL}/Session/logout`;
 		$authenticated = false;
+		fetch(endpoint, {
+			method: 'POST',
+			//credentials: 'same-origin',
+			credentials: 'include'
+		}).then((response) => {
+			console.log(response);
+			response.json().then((resp_data) => {
+				console.log(resp_data);
+				$username = resp_data.user.username;
+				$authenticated = true;
+			});
+		});
 	}
 
 	onMount(() => {
