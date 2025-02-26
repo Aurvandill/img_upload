@@ -14,7 +14,6 @@ from . import image_bp
 
 
 @image_bp.route("/<image_id:uuid>", ["GET"])
-
 async def get_image(request: Request, image_id: UUID):
     image = await Image.get_or_none(uuid=image_id)
     if image is None:
@@ -27,22 +26,23 @@ async def get_image(request: Request, image_id: UUID):
 
 from . import image_bp
 
+
 @image_bp.route("/<image_id:uuid>", ["DELETE"], name="delete_img")
 @get_id_token
 async def del_image(request: Request, image_id: UUID):
-    image:Optional[Image] = await Image.get_or_none(uuid=image_id)
+    image: Optional[Image] = await Image.get_or_none(uuid=image_id)
     if image is None:
         raise ImageDoesNotExist()
 
     image_handler: ImageHandler = request.app.ctx.image_handler
 
     id_token: IdentityToken = request.ctx.id_token
-    user:User = await id_token.user
+    user: User = await id_token.user
     img_uploader = await image.uploaded_by
     if user != img_uploader and not user.admin:
         # raise permission error
         raise PermissionError()
-    
+
     await image_handler.remove_file(str(image_id))
     await image.delete()
 

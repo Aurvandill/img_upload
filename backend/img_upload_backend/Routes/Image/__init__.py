@@ -1,7 +1,6 @@
 import i18n
 
 from uuid import uuid4
-from typing import Optional
 from sanic import Blueprint, Request
 from sanic.exceptions import BadRequest
 from sanic.response import json as json_resp
@@ -17,7 +16,8 @@ image_bp = Blueprint("Image", "/Image")
 from . import _uid
 
 
-@image_bp.route("/", ["GET"])
+@image_bp.route("/", ["GET"], name="show_images")
+@get_id_token
 async def show_images(request: Request):
     """This function returns a list of all Images.
 
@@ -87,7 +87,7 @@ async def show_images(request: Request):
     return json_resp({"image_count": image_count, "images": results})
 
 
-@image_bp.route("/", ["POST"])
+@image_bp.route("/", ["POST"], name="upload_image")
 @get_id_token
 async def upload_image(request: Request):
     id_token: IdentityToken = request.ctx.id_token
@@ -103,7 +103,6 @@ async def upload_image(request: Request):
         filename = raw_file[0].name
     except Exception as exc:
         pass
-
 
     img_uuid = uuid4()
     await image_handler.create_file(file, str(img_uuid))
