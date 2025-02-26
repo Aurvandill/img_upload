@@ -7,17 +7,66 @@ from sanic import Request
 from typing import Optional
 from sanic.exceptions import BadRequest
 from sanic.response import json as json_resp
+from sanic_ext import openapi
 
-from img_upload_backend.Utility import JWTHelper, ImageHandler
-from img_upload_backend.Exceptions import SessionError
+from img_upload_backend.Utility import ImageHandler
 from img_upload_backend.data_models import User, IdentityToken, Image
-from img_upload_backend.Utility.Decorators import request_contains_valid_json, get_id_token
+from img_upload_backend.Utility.Decorators import (
+    request_contains_valid_json,
+    get_id_token,
+)
 from . import user_bp
 
 
-@user_bp.route("/me", ["GET"], name="me")
+@user_bp.route("/me", ["GET"], name="show_me")
+@openapi.response(
+    200,
+    description="A JSON object containing information about the current user",
+    content={
+        "application/json": {
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "The uuid of the user",
+                        "example": "2923ef3d-47cc-4d1f-a519-ff2cf669e3b2",
+                    },
+                    "username": {
+                        "type": "string",
+                        "description": "The username of the user",
+                        "example": "example_user",
+                    },
+                    "admin": {"type": "boolean", "example": False},
+                    "member_since": {
+                        "type": "string",
+                        "description": "When the user joined",
+                        "example": "2025-07-13",
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "description": "When the user was created",
+                        "example": "2021-07-27T16:02:08.070Z",
+                    },
+                    "modified_at": {
+                        "type": "string",
+                        "description": "When the user was last modified",
+                        "example": "2021-07-27T16:02:08.070Z",
+                    },
+                },
+            },
+        },
+    },
+)
 @get_id_token
 async def me(request: Request):
+    """show me
+
+    Show currently logged in user
+
+
+    """
 
     id_token: IdentityToken = request.ctx.id_token
 

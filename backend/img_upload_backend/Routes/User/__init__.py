@@ -12,7 +12,9 @@ from . import _register, _me, _uid
 
 @user_bp.route("/", ["GET"])
 async def show_users(request: Request):
-    """This function returns a list of all Users.
+    """Show Users
+
+    This Functions returns all users.
 
     openapi:
     ---
@@ -29,18 +31,26 @@ async def show_users(request: Request):
       default: 1
     responses:
       '200':
+        description: A JSON object containing the user count and user details
         content:
           application/json:
-            type: object
             schema:
+              type: object
               properties:
-                id:
+                user_count:
                   type: integer
-                  format: int64
-                  example: 10
-                name:
-                  type: string
-                  example: doggie
+                  description: The total number of users
+                  example: 100
+                users:
+                  type: object
+                  additionalProperties:
+                    type: string
+                    format: uuid
+                  description: A map of user UUIDs to usernames
+                  example:
+                    b77cc1a0-91ec-4d64-bb6d-21717737ea3c: test_user
+                    19f401ba-e8b0-48c4-8c77-b0ebb26d97fe: another_user
+
     """
     request_args: dict = request.args
     try:
