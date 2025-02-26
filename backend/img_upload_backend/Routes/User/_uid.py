@@ -26,8 +26,11 @@ async def show_user_by_id(request: Request, user_id: UUID):
 
     # if the user is an admin we respond with the session token infos as well
     if request.ctx.user_info is not None and request.ctx.user_info.get("admin", False):
-        repsonse_data["identity_tokens"] = await user.identity_tokens.all().values_list(
+        id_tokens = await user.identity_tokens.all().values_list(
             "uuid", flat=True
         )
+        repsonse_data["identity_tokens"] = [str(uuid) for uuid in id_tokens]
+
+
 
     return json_resp(repsonse_data)
