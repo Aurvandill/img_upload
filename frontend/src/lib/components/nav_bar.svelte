@@ -84,7 +84,7 @@
 		href="/"
 		class="d-flex align-items-center ms-3 me-md-auto link-body-emphasis text-decoration-none"
 	>
-		<i class="bi bi-envelope"></i>
+		<i class="bi bi-cake2"></i>
 		<span class="fs-4 ms-2">Nellys und Erics Hochzeit</span>
 	</a>
 	<ul class="nav nav-pills me-3">
@@ -101,7 +101,8 @@
 			</li>
 			<li class="nav-item me-3">
 				<a href="/images/upload" aria-label="Upload image link">
-					<button class="btn bi-cloud-arrow-up btn-primary" aria-label="Upload Image Button"></button>
+					<button class="btn bi-cloud-arrow-up btn-primary" aria-label="Upload Image Button"
+					></button>
 				</a>
 			</li>
 			<li class="nav-item me-1 btn btn-outline-primary">

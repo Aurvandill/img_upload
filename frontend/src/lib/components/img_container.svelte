@@ -7,10 +7,6 @@
 	const dispatch = createEventDispatcher();
 
 	async function get_uploader(uid) {
-		if ($authenticated == false) {
-			//$username = "unauthorized";
-			return;
-		}
 		const endpoint = `${API_URL}/User/${uid}`;
 		try {
 			const response = await fetch(endpoint, {
@@ -119,7 +115,7 @@
 		<div class="img_flex d-flex flex-column">
 			<div
 				class="d-flex justify-content-between align-items-center mb-3"
-				style="width:100vw; background-color:rgba(0,0,0,0.25)"
+				style="width:100vw; background-color:rgba(0,0,0,0.5)"
 			>
 				{#await get_uploader(image.uploader)}
 					<p class="mb-0 text-bg-dark p-3 ms-1">Hochgeladen von unbekannt</p>
@@ -130,13 +126,13 @@
 				<div>
 					{#if $admin || $user_id == image.uploader}
 						<button
-							class="btn btn-outline-danger bi-trash3 fs-1 me-3"
+							class="btn btn-outline-danger bi-trash3 fs-3 me-1"
 							aria-label="Close"
 							onclick={delete_img}
 						></button>
 					{/if}
 					<button
-						class="btn btn-outline-danger bi-x-octagon fs-1 me-3"
+						class="btn btn-outline-danger bi-x-octagon fs-3 me-3"
 						aria-label="Close"
 						onclick={() => (show_modal = false)}
 					></button>

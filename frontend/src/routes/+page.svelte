@@ -1,1 +1,1 @@
-<h1>Welcome to SvelteKit</h1>
+<h1 class="ms-3">Welcome to SvelteKit</h1>
