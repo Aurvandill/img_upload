@@ -112,6 +112,8 @@ def create_app(config: dict) -> Sanic:
     attach_endpoints(app, config.get("cors_origin", "https://localhost:5173"))
     attach_signal_handlers(app)
     attach_error_handlers(app)
+    app.config.OAS_UI_REDOC = False
+    app.config.OAS_UI_DEFAULT = "swagger"
     app.ctx.CFG = config
 
     app.ctx.image_handler = ImageHandler(**config["Files"])
