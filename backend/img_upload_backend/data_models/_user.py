@@ -53,7 +53,7 @@ class User(Model):
 
     @property
     def member_since(self):
-        return self.created_at.strftime("%d/%m/%Y")
+        return self.created_at.strftime("%Y-%m-%d")
 
     async def serialize(self) -> dict:
         return {
