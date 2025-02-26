@@ -3,6 +3,8 @@ import { writable } from "svelte/store";
 export const toasts = writable([]);
 
 export const authenticated = writable(false);
+export const admin = writable(false);
+export const user_id = writable(undefined);
 
 export const addToast = (toast) => {
   // Create a unique ID so we can easily find/remove it

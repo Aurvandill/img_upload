@@ -1,8 +1,30 @@
 <script>
-	import { authenticated } from '$lib/stores';
+	import { authenticated, user_id, admin } from '$lib/stores';
 	import { API_URL } from '$lib/defines';
 	let { image } = $props();
 	let show_modal = $state(false);
+
+	async function get_uploader(uid) {
+		console.log(uid);
+		if ($authenticated == false) {
+			//$username = "unauthorized";
+			return;
+		}
+		const endpoint = `${API_URL}/User/${uid}`;
+		try {
+			const response = await fetch(endpoint, {
+				method: 'GET',
+				//credentials: 'same-origin',
+				credentials: 'include'
+			});
+			if (response.ok) {
+				const json = await response.json();
+				return json.username;
+			}
+		} catch (error) {
+			return 'unbekannt';
+		}
+	}
 
 	async function fetch_thumbnail() {
 		console.log(image);
@@ -72,12 +94,30 @@
 
 	<div class="modal" style="display: block">
 		<div class="img_flex d-flex flex-column">
-			<div class="d-flex justify-content-end" style="width:100vw">
-				<button
-					class="btn btn-outline-danger bi bi-x-octagon fs-1 me-3"
-					aria-label="Close"
-					onclick={() => (show_modal = false)}
-				></button>
+			<div
+				class="d-flex justify-content-between align-items-center mb-3"
+				style="width:100vw; background-color:rgba(0,0,0,0.25)"
+			>
+				{#await get_uploader(image.uploader)}
+					<p class="mb-0 text-bg-dark p-3 ms-1">Hochgeladen von unbekannt</p>
+				{:then username}
+					<p class="mb-0 text-bg-dark p-3 ms-1">Hochgeladen von {username}</p>
+				{/await}
+				<p class="mb-0 text-bg-dark p-3">{image.filename}</p>
+				<div>
+					{#if $admin || $user_id == image.uploader}
+						<button
+							class="btn btn-outline-danger bi-trash3 fs-1 me-3"
+							aria-label="Close"
+							onclick={() => (show_modal = false)}
+						></button>
+					{/if}
+					<button
+						class="btn btn-outline-danger bi-x-octagon fs-1 me-3"
+						aria-label="Close"
+						onclick={() => (show_modal = false)}
+					></button>
+				</div>
 			</div>
 			{#await fetch_img()}
 				<div class="d-flex justify-content-center align-items-center flex_img">

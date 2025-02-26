@@ -1,5 +1,5 @@
 <script>
-	import { authenticated, addToast } from '$lib/stores';
+	import { authenticated, addToast, user_id, admin } from '$lib/stores';
 	import { API_URL } from '$lib/defines';
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
@@ -57,6 +57,8 @@
 			const json = await response.json();
 			console.log(json);
 			$username = json.user.username;
+			$admin = json.user.admin;
+			$user_id = json.user.id;
 		} catch (error) {
 			$username = 'unbekannt';
 			$authenticated = false;
